@@ -7,6 +7,11 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  # GitHub Actions is deprecating Node.js 20 for JavaScript-based actions.
+  # Opt into Node.js 24 now to avoid surprise breakages when the default changes.
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 permissions:
   contents: write # to commit generated pages
   pages: write
@@ -25,7 +30,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Generate Cookbooks page from GitHub repositories
         env:
@@ -47,7 +52,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Generate Vision pages from GitHub issues
         env:
@@ -69,7 +74,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Build team index from local people/*.md
         run: node scripts/generate-team-index.mjs
@@ -102,7 +107,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - name: Install dependencies
