@@ -126,10 +126,44 @@ jobs:
 
   deploy:
     needs: [generate-cookbooks, generate-vision, generate-team-index]
-    uses: winccoa-tools-pack/.github/.github/workflows/deploy-pages.yml@main
-    with:
-      build_system: docusaurus
-      node_version: "20"
-      install_cmd: npm ci
-      build_cmd: npm run build
-      build_dir: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Previous jobs may have committed generated docs to main.
+      # Ensure we build from the latest origin/main.
+      - name: Sync to latest main
+        run: |
+          git fetch origin main
+          git checkout main
+          git reset --hard origin/main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build website
+        run: npm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
