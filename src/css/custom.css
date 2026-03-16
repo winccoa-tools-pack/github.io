@@ -1,0 +1,181 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  /* WinCC OA-inspired palette (sourced from winccoa.com CSS accents) */
+  --ifm-color-primary: #2387aa;
+  --ifm-color-primary-dark: #1e7391;
+  --ifm-color-primary-darker: #1a6580;
+  --ifm-color-primary-darkest: #134a5e;
+  --ifm-color-primary-light: #3d95b4;
+  --ifm-color-primary-lighter: #4f9fbb;
+  --ifm-color-primary-lightest: #70b1c8;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  /* Use a brighter WinCC OA teal accent for better dark-mode contrast */
+  --ifm-color-primary: #41aaaa;
+  --ifm-color-primary-dark: #379191;
+  --ifm-color-primary-darker: #318080;
+  --ifm-color-primary-darkest: #245e5e;
+  --ifm-color-primary-light: #58b4b4;
+  --ifm-color-primary-lighter: #67bbbb;
+  --ifm-color-primary-lightest: #84c8c8;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Vision list styling (match WinCC OA forum table row colors) */
+:root {
+  /* winccoa.com forum CSS: .tx-forum tr td { background-color:#ebeff5; border-bottom:5px solid #fff; } */
+  --vision-row-bg: #ebeff5;
+  --vision-row-separator: #ffffff;
+  --vision-border: #cdd9e1;
+  --vision-text: #2d373c;
+  --vision-muted: #788791;
+}
+
+[data-theme='dark'] {
+  /* Keep dark mode readable: use theme surfaces while preserving layout. */
+  --vision-row-bg: var(--ifm-background-surface-color);
+  --vision-row-separator: var(--ifm-background-color);
+  --vision-border: var(--ifm-toc-border-color);
+  --vision-text: var(--ifm-font-color-base);
+  --vision-muted: var(--ifm-color-emphasis-700);
+}
+
+.visionList {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.visionItem {
+  margin: 0;
+}
+
+.visionLink {
+  display: block;
+  padding: 0.9rem 1rem;
+  color: inherit;
+  text-decoration: none;
+  background-color: var(--vision-row-bg);
+  border-bottom: 5px solid var(--vision-row-separator);
+}
+
+.visionLink:hover {
+  text-decoration: none;
+  background-color: var(--vision-row-bg);
+}
+
+.visionLink:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+.visionTitle {
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--vision-text);
+}
+
+.visionMeta {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  color: var(--vision-muted);
+}
+
+.visionBadge {
+  display: inline-block;
+  padding: 0.05rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--vision-border);
+  font-weight: 600;
+  text-transform: lowercase;
+  color: var(--vision-muted);
+  background-color: transparent;
+}
+
+.visionBadge--open {
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+}
+
+.visionBadge--done {
+  border-color: var(--ifm-color-success);
+  background-color: var(--ifm-color-success);
+  color: var(--ifm-color-white);
+}
+
+.visionHr {
+  margin: 0.5rem 0;
+  border: 0;
+  border-top: 1px solid var(--vision-border);
+}
+
+.visionIdea {
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+  margin-bottom: 0.25rem;
+}
+
+.visionLabels {
+  display: inline-flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.visionLabel {
+  display: inline-block;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  border: 1px solid var(--vision-border);
+  font-size: 0.85em;
+  color: var(--vision-muted);
+  background-color: transparent;
+}
+
+.visionFooter {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+/* Cookbooks cards */
+.cookbooksGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.cookbookCard {
+  border: 1px solid var(--ifm-toc-border-color);
+  border-radius: var(--ifm-card-border-radius);
+  padding: 1rem;
+  background: var(--ifm-background-surface-color);
+}
+
+.cookbookDesc {
+  color: var(--ifm-color-emphasis-800);
+}
+
+.cookbookLinks {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width: 996px) {
+  .cookbooksGrid {
+    grid-template-columns: 1fr;
+  }
+}

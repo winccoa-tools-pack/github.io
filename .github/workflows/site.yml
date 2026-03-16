@@ -1,0 +1,135 @@
+name: Website — Generate Overview & Deploy
+
+on:
+  schedule:
+    - cron: "5 2 * * *" # daily at 02:05 UTC
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write # to commit generated pages
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  generate-cookbooks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate Cookbooks page from GitHub repositories
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node scripts/generate-cookbooks.mjs
+
+      - name: Commit updated Cookbooks page (only if changed)
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(docs): update cookbooks page [skip ci]"
+          file_pattern: docs/cookbooks/**
+
+  generate-vision:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate Vision pages from GitHub issues
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node scripts/generate-vision.mjs
+
+      - name: Commit updated Vision pages (only if changed)
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(docs): update vision pages [skip ci]"
+          file_pattern: docs/vision/**
+
+  # Optional: auto-build the team landing from local markdown
+  generate-team-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build team index from local people/*.md
+        run: |
+          node -e "
+          const fs = require('fs'), path = require('path');
+          const dir = 'docs/team/people';
+          const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => f.endsWith('.md') || f.endsWith('.mdx')) : [];
+          const people = [];
+          for (const f of files) {
+            const p = path.join(dir, f);
+            const raw = fs.readFileSync(p, 'utf8');
+            const match = raw.match(/^---[\\s\\S]*?---/);
+            let fm = {};
+            if (match) {
+              const yaml = match[0].replace(/^---|---$/g, '');
+              yaml.split('\\n').forEach(line => {
+                const m = line.match(/^([A-Za-z0-9_]+):\\s*(.*)$/);
+                if (m) {
+                  const k = m[1].trim(), v = m[2].trim();
+                  if (v.startsWith('[') && v.endsWith(']')) {
+                    fm[k] = v.slice(1, -1).split(',').map(s => s.trim());
+                  } else {
+                    fm[k] = v.replace(/^\\\"|\\\"$/g,'');
+                  }
+                }
+              });
+            }
+            const title = fm.title || f.replace(/\\.(md|mdx)$/,'').replace(/[-_]/g,' ');
+            people.push({
+              title,
+              role: fm.role || '',
+              path: './people/' + f,
+            });
+          }
+          people.sort((a,b) => a.title.localeCompare(b.title));
+          const out = [
+            '---',
+            'title: Team & Contributors',
+            'description: The people behind winccoa-tools-pack.',
+            '---',
+            '',
+            '# Team & Contributors',
+            '',
+            'Below are the people who make this ecosystem possible.',
+            '',
+            people.map(p => `- ${p.path}${p.role ? ' — ' + p.role : ''}`).join('\\n'),
+            '',
+            '> Want to be featured? Add your profile to `docs/team/people/` and open a PR.',
+            ''
+          ].join('\\n');
+          fs.mkdirSync('docs/team', { recursive: true });
+          fs.writeFileSync('docs/team/index.md', out);
+          "
+      - name: Commit team index (if changed)
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(docs): rebuild team index [skip ci]"
+          file_pattern: docs/team/index.md
+
+  deploy:
+    needs: [generate-cookbooks, generate-vision, generate-team-index]
+    uses: winccoa-tools-pack/.github/.github/workflows/deploy-pages.yml@main
+    with:
+      build_system: docusaurus
+      node_version: "20"
+      install_cmd: npm ci
+      build_cmd: npm run build
+      build_dir: build
