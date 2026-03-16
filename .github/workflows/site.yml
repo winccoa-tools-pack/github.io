@@ -66,58 +66,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Build team index from local people/*.md
-        run: |
-          node -e "
-          const fs = require('fs'), path = require('path');
-          const dir = 'docs/team/people';
-          const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => f.endsWith('.md') || f.endsWith('.mdx')) : [];
-          const people = [];
-          for (const f of files) {
-            const p = path.join(dir, f);
-            const raw = fs.readFileSync(p, 'utf8');
-            const match = raw.match(/^---[\\s\\S]*?---/);
-            let fm = {};
-            if (match) {
-              const yaml = match[0].replace(/^---|---$/g, '');
-              yaml.split('\\n').forEach(line => {
-                const m = line.match(/^([A-Za-z0-9_]+):\\s*(.*)$/);
-                if (m) {
-                  const k = m[1].trim(), v = m[2].trim();
-                  if (v.startsWith('[') && v.endsWith(']')) {
-                    fm[k] = v.slice(1, -1).split(',').map(s => s.trim());
-                  } else {
-                    fm[k] = v.replace(/^\\\"|\\\"$/g,'');
-                  }
-                }
-              });
-            }
-            const title = fm.title || f.replace(/\\.(md|mdx)$/,'').replace(/[-_]/g,' ');
-            people.push({
-              title,
-              role: fm.role || '',
-              path: './people/' + f,
-            });
-          }
-          people.sort((a,b) => a.title.localeCompare(b.title));
-          const out = [
-            '---',
-            'title: Team & Contributors',
-            'description: The people behind winccoa-tools-pack.',
-            '---',
-            '',
-            '# Team & Contributors',
-            '',
-            'Below are the people who make this ecosystem possible.',
-            '',
-            people.map(p => `- ${p.path}${p.role ? ' — ' + p.role : ''}`).join('\\n'),
-            '',
-            '> Want to be featured? Add your profile to `docs/team/people/` and open a PR.',
-            ''
-          ].join('\\n');
-          fs.mkdirSync('docs/team', { recursive: true });
-          fs.writeFileSync('docs/team/index.md', out);
-          "
+        run: node scripts/generate-team-index.mjs
       - name: Commit team index (if changed)
         uses: stefanzweifel/git-auto-commit-action@v5
         with:

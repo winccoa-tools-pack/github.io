@@ -5,6 +5,8 @@ description: The people behind winccoa-tools-pack.
 
 # Team & Contributors
 
-These repositories reflect a collaborative effort — thank you to everyone participating.
+Below are the people who make this ecosystem possible.
 
-> Want to be featured here? Open a PR adding a Markdown file to `docs/team/people/`.
+- ./people/martin-pokorny.md — Founder
+
+> Want to be featured? Add your profile to `docs/team/people/` and open a PR.
