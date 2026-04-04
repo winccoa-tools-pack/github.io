@@ -12,7 +12,7 @@ After cloning any repository and running `apm install`, your AI tool (GitHub Cop
 
 ## Sections
 
-- **[Org-Wide Skills](org/)** — skills shared across all repositories (conventional commits, git flow, versioning, etc.)
+Browse the available skills in the sidebar on the left.
 
 ## How it works
 
