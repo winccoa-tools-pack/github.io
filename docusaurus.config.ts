@@ -68,6 +68,11 @@ const config: Config = {
           position: 'left',
         },
         {
+          to: '/docs/skills',
+          label: 'AI Skills',
+          position: 'left',
+        },
+        {
           label: 'Contribute',
           position: 'left',
           items: [
@@ -104,6 +109,7 @@ const config: Config = {
             {label: 'Cookbooks', to: '/docs/cookbooks'},
             {label: 'Vision', to: '/docs/vision'},
             {label: 'Tools', to: '/docs/tools'},
+            {label: 'AI Skills', to: '/docs/skills'},
             {label: 'Success Stories', to: '/docs/success-stories'},
             {label: 'Team', to: '/docs/team'},
           ],
