@@ -1,5 +1,5 @@
 ---
-title: "Swithc to Trusted publishing for npm packages"
+title: "Switch to Trusted Publishing for npm packages"
 description: "Vision idea tracked as GitHub issue #48."
 ---
 
@@ -15,10 +15,10 @@ Trusted publishing for npm packages
 
 ### What CI/CD gap does this address?
 
-Currently we use the granualr token for NPM packate publishing whin need to  generated new every 90 days. 
+Currently we use the granular token for NPM package publishing which needs to be regenerated every 90 days. 
 
 ### Proposed workflow or action
 
-To reduce the effort we shll swithc to "Trusted publishing for npm packages". See also
+To reduce the effort we shall switch to "Trusted publishing for npm packages". See also
 
 https://[docs.npmjs.com/trusted-publishers](https://docs.npmjs.com/trusted-publishers)
