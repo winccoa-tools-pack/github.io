@@ -89,6 +89,11 @@ const config: Config = {
         {to: '/docs/success-stories', label: 'Success Stories', position: 'left'},
         {to: '/docs/team', label: 'Team', position: 'left'},
         {
+          to: '/devdays26',
+          label: 'DevDays 2026',
+          position: 'left',
+        },
+        {
           href: 'https://marketplace.visualstudio.com/items?itemName=mPokornyETM.wincc-oa-projects',
           label: 'VS Code Marketplace',
           position: 'right',
@@ -138,6 +143,10 @@ const config: Config = {
         {
           title: 'More',
           items: [
+            {
+              label: 'DevDays 2026',
+              to: '/devdays26',
+            },
             {
               label: 'Website Repo',
               href: 'https://github.com/winccoa-tools-pack/winccoa-tools-pack.github.io',

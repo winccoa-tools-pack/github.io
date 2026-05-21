@@ -1,0 +1,71 @@
+.page {
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  min-height: calc(100vh - var(--ifm-navbar-height));
+}
+
+.header {
+  padding: 40px;
+  text-align: center;
+  background: var(--ifm-background-surface-color);
+}
+
+.h1 {
+  margin: 0;
+  font-size: 32px;
+  color: var(--ifm-color-primary);
+}
+
+.h2 {
+  color: var(--ifm-color-primary);
+}
+
+.h3 {
+  margin-top: 0;
+}
+
+.subtitle {
+  margin-top: 10px;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.centerSection {
+  text-align: center;
+  padding: 30px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 40px;
+}
+
+.card {
+  background: var(--ifm-background-surface-color);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--ifm-toc-border-color);
+}
+
+.downloads {
+  font-weight: bold;
+  color: var(--ifm-color-success);
+}
+
+.author {
+  font-size: 14px;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.footer {
+  text-align: center;
+  padding: 30px;
+  background: var(--ifm-background-surface-color);
+  margin-top: 20px;
+}
+
+.highlight {
+  color: var(--ifm-color-primary);
+  font-weight: bold;
+}
